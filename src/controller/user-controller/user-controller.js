@@ -37,7 +37,7 @@ const greetUser = (req, res) =>{
         message: "User Module in Node Js"
     })
 }
-
+// "Create User"
 const createUser = async (req, res)=>{
     try {
         const isUserExist = await userModal.findOne({email: req.body.email}) 

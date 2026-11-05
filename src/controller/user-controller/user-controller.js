@@ -7,15 +7,13 @@ import fs from "fs";
 import path from "path";
 import multer from "multer";
 import NodeCache from "node-cache";
-import { use } from "react";
 import nodemailer from "nodemailer"
 import Stripe from "stripe"
 
 
-const stripe = new Stripe(
-    process.env.STRIPE_SECRET_KEY,
-    {apiVersion: "2023-10-16"}
-)
+const stripe = process.env.STRIPE_SECRET_KEY
+    ? new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: "2023-10-16" })
+    : null;
 
 
 const users = [
@@ -613,6 +611,9 @@ const handleCheckOut = async (req, res) =>{
     console.log("Items: ", items);
 
     try {
+        if (!stripe) {
+            return res.status(503).send({ status: false, message: "Stripe is not configured" });
+        }
         const modifyData = items.map((item, index)=>{
             return {
                 price_data: {

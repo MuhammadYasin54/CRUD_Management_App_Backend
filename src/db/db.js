@@ -14,6 +14,7 @@ try {
     
 } catch (error) {
     console.log("Something went wrong while connecting Db", error)
+    throw error;
 }
 }
 
